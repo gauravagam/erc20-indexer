@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { useState } from 'react';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 function App() {
   const [userAddress, setUserAddress] = useState('');
@@ -20,7 +21,7 @@ function App() {
 
   async function getTokenBalance() {
     const config = {
-      apiKey: '<-- COPY-PASTE YOUR ALCHEMY API KEY HERE -->',
+      apiKey: import.meta.env.VITE_ALCHEMY_API_KEY,
       network: Network.ETH_MAINNET,
     };
 
@@ -43,7 +44,7 @@ function App() {
   }
   return (
     <Box w="100vw">
-      <Center>
+      {/* <Center>
         <Flex
           alignItems={'center'}
           justifyContent="center"
@@ -111,7 +112,19 @@ function App() {
         ) : (
           'Please make a query! This may take a few seconds...'
         )}
-      </Flex>
+      </Flex> */}
+      <Box w="100%" p={12} borderWidth='1px' bg={"#E2E8F0"} height={"fit-content"}>
+	  	  <Heading m={5} fontSize={36} color="#8AAAE5">
+            ERC-20 Token Indexer
+        </Heading>
+        <ConnectButton accountStatus={{
+          smallScreen: 'avatar',
+          largeScreen: 'full',
+        }} 
+        chainStatus={
+          { smallScreen: "icon", largeScreen: "full" }
+        } />
+      </Box>
     </Box>
   );
 }

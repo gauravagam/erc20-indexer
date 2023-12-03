@@ -117,6 +117,8 @@ function App() {
 	  	  <Heading m={5} fontSize={36} color="#8AAAE5">
             ERC-20 Token Indexer
         </Heading>
+      </Box>
+      <Center mt={"20px"}>
         <ConnectButton accountStatus={{
           smallScreen: 'avatar',
           largeScreen: 'full',
@@ -124,7 +126,7 @@ function App() {
         chainStatus={
           { smallScreen: "icon", largeScreen: "full" }
         } />
-      </Box>
+        </Center>
     </Box>
   );
 }

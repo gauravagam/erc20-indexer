@@ -5,18 +5,19 @@ import './index.css'
 import '@rainbow-me/rainbowkit/styles.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import {
-  // getDefaultWallets,
   RainbowKitProvider,
-  connectorsForWallets
+  // connectorsForWallets,
+  getDefaultWallets
 } from '@rainbow-me/rainbowkit';
 import {
   injectedWallet,
   // rainbowWallet,
   // walletConnectWallet,
+  metaMaskWallet
 } from '@rainbow-me/rainbowkit/wallets'
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-  // mainnet,
+  mainnet,
   polygon
   // optimism,
   // arbitrum,
@@ -27,26 +28,26 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, publicClient } = configureChains(
-  [polygon],
+  [mainnet, polygon],
   [
     alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }),
     publicProvider()
   ]
 );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      injectedWallet({ chains })
-    ]
-  } 
-]);
+const { connectors } = getDefaultWallets({
+  appName: "erc20-indexer",
+  projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+  chains
+});
 
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors, //: [new InjectedConnector({chains})],
-  publicClient
+  connectors,
+  publicClient,
+  logger: {
+    warn: (message) => logWarn(message),
+  }
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(

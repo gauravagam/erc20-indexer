@@ -18,7 +18,8 @@ import {
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
   mainnet,
-  polygon
+  polygon,
+  goerli
   // optimism,
   // arbitrum,
   // base,
@@ -26,9 +27,11 @@ import {
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+import { ChakraProvider } from '@chakra-ui/react'
+
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon],
+  [mainnet, polygon,goerli],
   [
     alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_API_KEY }),
     publicProvider()
@@ -54,7 +57,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <WagmiConfig config={wagmiConfig}>
       <RainbowKitProvider chains={chains}>
-        <App />
+        <ChakraProvider toastOptions={{ defaultOptions: { position: 'top-right' } }}>
+          <App />
+        </ChakraProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   </React.StrictMode>,

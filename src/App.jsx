@@ -1,15 +1,17 @@
 import {
   Box,
-  Button,
   Center,
   Flex,
   Heading,
   Image,
-  Input,
-  SimpleGrid,
   Text,
   Spinner,
-  useToast
+  useToast,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel
 } from '@chakra-ui/react';
 import { Alchemy, Network, Utils } from 'alchemy-sdk';
 import { useState } from 'react';
@@ -108,45 +110,54 @@ function App() {
         } />
         </Flex>
         </Center>
-      { isConnected && <Flex
-        w="100%"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent={'center'}
-      >
-        { !error && <><Heading my={8} fontSize={24}>ERC-20 token balances:</Heading>
-        {!isLoading ? (
-          // <SimpleGrid w={'90%'} minChildWidth="210px" spacingX={26} spacingY={18} mx="12">
-          <Flex columnGap={"12px"} rowGap={"15px"} wrap="wrap" paddingX={[4,"50px"]}>
-            {results.tokenBalances.map((e, i) => {
-              return (
-                <Flex
-                  flexDir={'column'}
-                  color="#000000"
-                  bg="#E2E8F0"
-                  key={e.contractAddress}
-                  p="15px"
-                  width={["100%","210px"]}
-                >
-                  <Box>
-                    <b>Symbol:</b> ${tokenDataObjects[i]?.symbol}&nbsp;
-                  </Box>
-                  <Box>
-                    <b>Balance:</b>&nbsp;
-                    {Utils.formatUnits(
-                      e.tokenBalance,
-                      tokenDataObjects[i]?.decimals
-                    )}
-                  </Box>
-                  <Image src={tokenDataObjects[i]?.logo} />
-                </Flex>
-              );
-            })}
-          
-          </Flex>
-        ) : 
-        <Spinner size="xl" thickness='4px'/>}</>}
-      </Flex>}
+        <Tabs variant="soft-rounded" colorScheme={"blue"} paddingX={[4,"50px"]}>
+          <TabList>
+            <Tab color={"#000000"}>ERC-20 Token</Tab>
+            <Tab>NFT</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel paddingX={"0px"}>
+              { isConnected && <Flex
+                w="100%"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent={'center'}
+              >
+                { !error && <><Heading my={8} fontSize={24}>ERC-20 token balances:</Heading>
+                {!isLoading ? (
+                  <Flex columnGap={"12px"} rowGap={"15px"} wrap="wrap">
+                    {results.tokenBalances.map((e, i) => {
+                      return (
+                        <Flex
+                          flexDir={'column'}
+                          color="#000000"
+                          bg="#E2E8F0"
+                          key={e.contractAddress}
+                          p="15px"
+                          width={["100%","210px"]}
+                        >
+                          <Box>
+                            <b>Symbol:</b> ${tokenDataObjects[i]?.symbol}&nbsp;
+                          </Box>
+                          <Box>
+                            <b>Balance:</b>&nbsp;
+                            {Utils.formatUnits(
+                              e.tokenBalance,
+                              tokenDataObjects[i]?.decimals
+                            )}
+                          </Box>
+                          <Image src={tokenDataObjects[i]?.logo} />
+                        </Flex>
+                      );
+                    })}
+                  
+                  </Flex>
+                ) : 
+                <Spinner size="xl" thickness='4px'/>}</>}
+              </Flex>}
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       
     </Box>
   );
